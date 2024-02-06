@@ -1,5 +1,15 @@
 package mru.game.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+
+import mru.game.model.Player;
 
 public class GameManager {
 	
@@ -11,7 +21,44 @@ public class GameManager {
 	 * A method to find the top players
 	 * Depending on your designing technique you may need and you can add more methods here 
 	 */
+	 private final String FILE_PATH = "Casinoinfo,txt";
+    ArrayList<Player> players;
 
+	//initalize players
+    public GameManager() throws Exception {
+        players = new ArrayList<>();
+	
+	}
+    
+	//adds player fields to a formatted arraylist
+	private void loadData() throws FileNotFoundException {
+		File db = new File(FILE_PATH);
+		
+		if (db.exists()) {
+			Scanner fileReader = new Scanner(db);
+			
+			while (fileReader.hasNextLine()) {
+				String currentLine = fileReader.nextLine();
+				String[] splittedLine = currentLine.split(",");
+				Player p = new Player(splittedLine[0], Integer.parseInt(splittedLine[1]), Integer.parseInt(splittedLine[2]));
+				players.add(p);
+			}
+			fileReader.close();
+		}
+	}
+
+	//saves the arraylist into the txt file
+	public void saveData() throws IOException {
+        FileWriter fileWriter = new FileWriter(FILE_PATH);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+        for (Player player : players) {
+            String playerData = String.format("%s,%d,%d", player.getName(), player.getNumOfWins(), player.getBalance());
+            printWriter.println(playerData);
+        }
+        printWriter.close();
+
+
+	
 	
 
 }
