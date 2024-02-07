@@ -56,7 +56,11 @@ public class GameManager {
             printWriter.println(playerData);
         }
         printWriter.close();
-
+	
+	//Search for a player based off their name
+	public String searchName() {
+		
+	}
 
 	
 	

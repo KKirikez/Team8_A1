@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class AppMenu {
 
-	Scanner input;
+	Scanner input = new Scanner(System.in);
 
 
 	/**
@@ -31,7 +31,7 @@ public class AppMenu {
 
 	public String namePrompt() {
 		System.out.print("Enter a name here:");
-		String name = ;
+		String name = input.nextLine();
 		return name;
 	}
 

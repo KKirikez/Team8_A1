@@ -1,5 +1,7 @@
 package mru.game.model;
 
+import mru.game.view.AppMenu;
+
 
 public class Player {
 	
