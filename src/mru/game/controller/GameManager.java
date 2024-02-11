@@ -83,7 +83,31 @@ public class GameManager {
 		}
 		System.out.println("Press \"Enter\" to continue...");
 		new Scanner(System.in).nextLine(); 
+		
 	}
+
+	//finds the top players and displays them
+	public void showTopPlayer() {
+		
+		Player topPlayer = players.get(0);
+		for (Player player : players) {
+			if (player.getNumOfWins() > topPlayer.getNumOfWins()) {
+				topPlayer = player;
+			}
+		}
+		
+		System.out.println("\n - TOP PLAYER - ");
+		System.out.println("=======================================");
+		System.out.printf("|%-10s|%-6s|%-8s|\n", "NAME", "WINS", "BALANCE");
+		System.out.println("=======================================");
+		System.out.printf("|%-10s|%6d|%8d $|\n", topPlayer.getName(), topPlayer.getNumOfWins(), topPlayer.getBalance());
+		System.out.println("=======================================");
+		System.out.println("Press \"Enter\" to continue...");
+		new Scanner(System.in).nextLine(); 
+	}
+	
+
+
 
 	
 	
