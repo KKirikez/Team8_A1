@@ -63,14 +63,10 @@ public class GameManager {
 	public void searchName() {
 		AppMenu menu = new AppMenu();
 		String name = menu.namePrompt(); 
-	
-		// Start with the assumption that the player is not found
 		boolean playerFound = false;
 		
-		// Iterate over the players to find a match
 		for (Player player : players) {
 			if (player.getName().equalsIgnoreCase(name)) {
-				//If Player found, print player info
 				System.out.println("\n - PLAYER INFO - ");
 				System.out.println("=======================================");
 				System.out.printf("|%-10s|%-6s|%-8s|\n", "NAME", "WINS", "BALANCE");
@@ -83,11 +79,8 @@ public class GameManager {
 		}
 	
 		if (!playerFound) {
-			// Player not found in the database
 			System.out.println("\nPlayer not found in the database.");
 		}
-	
-		// Wait for the user to press "Enter" to continue
 		System.out.println("Press \"Enter\" to continue...");
 		new Scanner(System.in).nextLine(); 
 	}
