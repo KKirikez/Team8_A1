@@ -1,4 +1,3 @@
-
 	/**
 	 * In this class you implement the game
 	 * You should use CardDeck class here
@@ -148,4 +147,3 @@ public class BlackjackGame {
         return value;
     }
 }
-
