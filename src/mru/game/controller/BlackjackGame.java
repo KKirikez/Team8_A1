@@ -1,152 +1,151 @@
-package mru.game.controller;
-
-public class BlackjackGame {
 
 	/**
 	 * In this class you implement the game
 	 * You should use CardDeck class here
 	 * See the instructions for the game rules
-	 */
-
+	 */	
 package mru.game.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BlackjackGame {
-    private Player player;
-    private Dealer dealer;
-    private CardDeck deck;
-    private Scanner scanner;
 
-    public BlackjackGame(Player player, Scanner scanner) {
-        this.player = player;
-        this.dealer = new Dealer();
-        this.deck = new CardDeck();
-        this.scanner = scanner;
-    }
+    private static final int BLACKJACK_VALUE = 21;
+    private static final int DEALER_STAND_VALUE = 17;
 
-    public void startGame() {
-        System.out.println("Welcome to Blackjack!");
-        System.out.println("Let's get started.\n");
-
-        while (true) {
-            System.out.println("Your balance: $" + player.getBalance());
-            System.out.println("Place your bet (Minimum $2, Maximum $" + player.getBalance() + "):");
-
-            double bet = getValidBet();
-
-            if (bet == 0) {
-                System.out.println("You don't have enough balance to place a bet. Exiting game...");
-                return;
-            }
-
-            Hand playerHand = new Hand();
-            Hand dealerHand = new Hand();
-
-            dealInitialCards(playerHand, dealerHand);
-
-            boolean playerBusted = playerTurn(playerHand);
-            if (playerBusted) {
-                System.out.println("You busted! Dealer wins.");
-                player.setBalance(player.getBalance() - bet);
-                continue;
-            }
-
-            dealerTurn(dealerHand);
-
-            determineWinner(playerHand, dealerHand, bet);
-
-            System.out.println("Do you want to play again? (Y/N)");
-            String playAgain = scanner.next().trim();
-            if (!playAgain.equalsIgnoreCase("N")) {
-                System.out.println("Thank you for playing Blackjack!");
-                return;
-            }
+    public static void main(String[] args) {
+        try {
+            GameManager.startGame();
+            startBlackjack();
+            GameManager.saveData();
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
         }
     }
 
-    private double getValidBet() {
-        double bet;
-        while (true) {
-            try {
-                bet = scanner.nextDouble();
-                if (bet < 2 || bet > player.getBalance()) {
-                    throw new IllegalArgumentException();
+    public static void startBlackjack() {
+        Scanner scanner = new Scanner(System.in);
+        boolean playAgain = true;
+
+        while (playAgain) {
+           
+            CardDeck deck = new CardDeck();
+            Player player = getPlayer();
+
+            System.out.println("Welcome " + player.getName() + "!");
+
+       
+            ArrayList<Card> playerHand = new ArrayList<>();
+            ArrayList<Card> dealerHand = new ArrayList<>();
+            dealInitialCards(deck, playerHand, dealerHand);
+
+ 
+            playerTurn(deck, playerHand, scanner);
+
+    
+            dealerTurn(deck, dealerHand);
+
+       
+            determineWinner(player, playerHand, dealerHand);
+
+      
+            System.out.print("Do you want to play again? (y/n): ");
+            String playAgainInput = scanner.next();
+            playAgain = playAgainInput.equalsIgnoreCase("y");
+        }
+
+        scanner.close();
+    }
+
+    private static Player getPlayer() {
+        try {
+            GameManager.loadData();
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter your name: ");
+            String name = scanner.nextLine();
+            for (Player player : GameManager.players) {
+                if (player.getName().equalsIgnoreCase(name)) {
+                    System.out.println("Welcome back, " + player.getName() + "! Your balance is $" + player.getBalance());
+                    return player;
                 }
+            }
+            System.out.println("Welcome, " + name + "! Your balance is $100");
+            return new Player(name, 0, 100); 
+        } catch (IOException e) {
+            System.out.println("An error occurred while loading player data: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static void dealInitialCards(CardDeck deck, ArrayList<Card> playerHand, ArrayList<Card> dealerHand) {
+        playerHand.add(deck.drawCard());
+        playerHand.add(deck.drawCard());
+        dealerHand.add(deck.drawCard());
+        dealerHand.add(deck.drawCard());
+    }
+
+    private static void playerTurn(CardDeck deck, ArrayList<Card> playerHand, Scanner scanner) {
+        while (calculateHandValue(playerHand) < BLACKJACK_VALUE) {
+            System.out.println("Your hand: " + playerHand);
+            System.out.print("Do you want to hit or stand? (hit/stand): ");
+            String choice = scanner.next();
+            if (choice.equalsIgnoreCase("hit")) {
+                playerHand.add(deck.drawCard());
+            } else if (choice.equalsIgnoreCase("stand")) {
                 break;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Invalid bet amount. Please enter a valid bet:");
-                scanner.nextLine(); // 
             }
         }
-        return bet;
     }
 
-    private void dealInitialCards(Hand playerHand, Hand dealerHand) {
-        playerHand.addCard(deck.drawCard());
-        dealerHand.addCard(deck.drawCard());
-        playerHand.addCard(deck.drawCard());
-        dealerHand.addCard(deck.drawCard());
-
-        System.out.println("Your cards: " + playerHand);
-        System.out.println("Dealer's cards: " + dealerHand.getVisibleCards());
-    }
-
-    private boolean playerTurn(Hand playerHand) {
-        while (true) {
-            System.out.println("Do you want to Hit (H) or Stand (S)?");
-            String decision = scanner.next().trim();
-            if (decision.equalsIgnoreCase("H")) {
-                playerHand.addCard(deck.drawCard());
-                System.out.println("Your cards: " + playerHand);
-                if (playerHand.getTotal() > 21) {
-                    return true;
-                }
-            } else if (decision.equalsIgnoreCase("S")) {
-                break;
-            } else {
-                System.out.println("Invalid input. Please enter 'H' to Hit or 'S' to Stand:");
-            }
-        }
-        return false;
-    }
-
-    private void dealerTurn(Hand dealerHand) {
-        System.out.println("Dealer's turn:");
-        System.out.println("Dealer's cards: " + dealerHand);
-
-        while (dealerHand.getTotal() < 17) {
-            dealerHand.addCard(deck.drawCard());
-            System.out.println("Dealer draws a card.");
-            System.out.println("Dealer's cards: " + dealerHand);
+    private static void dealerTurn(CardDeck deck, ArrayList<Card> dealerHand) {
+        while (calculateHandValue(dealerHand) < DEALER_STAND_VALUE) {
+            dealerHand.add(deck.drawCard());
         }
     }
 
-    private void determineWinner(Hand playerHand, Hand dealerHand, double bet) {
-        int playerTotal = playerHand.getTotal();
-        int dealerTotal = dealerHand.getTotal();
+    private static void determineWinner(Player player, ArrayList<Card> playerHand, ArrayList<Card> dealerHand) {
+        int playerValue = calculateHandValue(playerHand);
+        int dealerValue = calculateHandValue(dealerHand);
 
-        System.out.println("Final hands:");
-        System.out.println("Your cards: " + playerHand + " (Total: " + playerTotal + ")");
-        System.out.println("Dealer's cards: " + dealerHand + " (Total: " + dealerTotal + ")");
+        if (playerValue > BLACKJACK_VALUE) {
+            System.out.println("Player busted! Dealer wins.");
+            return;
+        }
 
-        if (playerTotal > 21) {
-            System.out.println("You busted! Dealer wins.");
-            player.setBalance(player.getBalance() - bet);
-        } else if (dealerTotal > 21) {
-            System.out.println("Dealer busted! You win.");
-            player.setBalance(player.getBalance() + bet);
-        } else if (playerTotal > dealerTotal) {
-            System.out.println("You win!");
-            player.setBalance(player.getBalance() + bet);
-        } else if (playerTotal < dealerTotal) {
-            System.out.println("Dealer wins.");
-            player.setBalance(player.getBalance() - bet);
+        if (dealerValue > BLACKJACK_VALUE || playerValue > dealerValue) {
+            System.out.println("Player wins!");
+            player.setNumOfWins(player.getNumOfWins() + 1);
+        } else if (dealerValue > playerValue) {
+            System.out.println("Dealer wins!");
         } else {
-            System.out.println("It's a tie.");
+            System.out.println("It's a tie!");
         }
+    }
+
+    private static int calculateHandValue(ArrayList<Card> hand) {
+        int value = 0;
+        int numAces = 0;
+
+        for (Card card : hand) {
+            if (card.getRank() >= 10) {
+                value += 10;
+            } else if (card.getRank() == 1) {
+                numAces++;
+                value += 11; // Assume ace as 11 initially
+            } else {
+                value += card.getRank();
+            }
+        }
+
+        
+        while (value > BLACKJACK_VALUE && numAces > 0) {
+            value -= 10; // Change ace value from 11 to 1
+            numAces--;
+        }
+
+        return value;
     }
 }
 
-
-}
