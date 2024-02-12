@@ -8,6 +8,8 @@ package mru.game.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import mru.game.model.Player;
+
 
 public class BlackjackGame {
 
@@ -30,21 +32,12 @@ public class BlackjackGame {
 
         while (playAgain) {
            
-            CardDeck deck = new CardDeck();
-            Player player = getPlayer();
+CardDeck deck = new CardDeck();
+Player player = getPlayer();
 
-            System.out.println("Welcome " + player.getName() + "!");
+System.out.println("Welcome " + player.getName() + "!");
 
-       
-            ArrayList<Card> playerHand = new ArrayList<>();
-            ArrayList<Card> dealerHand = new ArrayList<>();
-            dealInitialCards(deck, playerHand, dealerHand);
-
- 
-            playerTurn(deck, playerHand, scanner);
-
-    
-            dealerTurn(deck, dealerHand);
+// Rest of the code...
 
        
             determineWinner(player, playerHand, dealerHand);
