@@ -22,22 +22,36 @@ public class GameManager {
 	 * A method to find the top players
 	 * Depending on your designing technique you may need and you can add more methods here 
 	 */
-	 private final String FILE_PATH = "Casinoinfo,txt";
-    ArrayList<Player> players;
-
+	 private final static String FILE_PATH = "./res/Casinoinfo.txt";
+     static ArrayList<Player> players;
+     
+     
+     public static void startGame() {
+    	 try {
+			loadData();
+		} catch (FileNotFoundException e) {
+			System.out.println("Error, file not found!");
+		}
+    	 AppMenu.MainMenu();
+    	 try {
+			saveData();
+		} catch (IOException e) {
+			System.out.println("Error, could not save data!");
+		}
+     }
+     
 	//initalize players
     public GameManager() throws Exception {
-        players = new ArrayList<>();
+        players = new ArrayList<Player>();
 	
 	}
     
 	//adds player fields to a formatted arraylist
-	private void loadData() throws FileNotFoundException {
+	public static void loadData() throws FileNotFoundException {
 		File db = new File(FILE_PATH);
 		
 		if (db.exists()) {
 			Scanner fileReader = new Scanner(db);
-			
 			while (fileReader.hasNextLine()) {
 				String currentLine = fileReader.nextLine();
 				String[] splittedLine = currentLine.split(",");
@@ -45,11 +59,13 @@ public class GameManager {
 				players.add(p);
 			}
 			fileReader.close();
+		} else {
+			System.out.println("Error, file not found!");
 		}
 	}
 
 	//saves the arraylist into the txt file
-	public void saveData() throws IOException {
+	public static void saveData() throws IOException {
         FileWriter fileWriter = new FileWriter(FILE_PATH);
         PrintWriter printWriter = new PrintWriter(fileWriter);
         for (Player player : players) {
@@ -60,7 +76,8 @@ public class GameManager {
 	}
 	
 	//Search for a player based off their name
-	public void searchName() {
+	public void searchName() throws FileNotFoundException {
+		loadData();
 		AppMenu menu = new AppMenu();
 		String name = menu.namePrompt(); 
 		boolean playerFound = false;
@@ -87,8 +104,7 @@ public class GameManager {
 	}
 
 	//finds the top players and displays them
-	public void showTopPlayer() {
-		
+	public static void showTopPlayer() {
 		Player topPlayer = players.get(0);
 		for (Player player : players) {
 			if (player.getNumOfWins() > topPlayer.getNumOfWins()) {
