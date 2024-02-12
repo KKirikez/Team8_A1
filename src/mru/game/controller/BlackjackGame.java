@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import mru.game.model.Player;
+
 public class BlackjackGame {
 
     private static final int BLACKJACK_VALUE = 21;

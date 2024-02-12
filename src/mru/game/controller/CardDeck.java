@@ -14,6 +14,7 @@ public class CardDeck {
 	 * deck holds all of the cards that currently are in the current deck
 	 */
 	private ArrayList <Card> deck;
+	private int CurrentCard = 0;
 	
 	/**
 	 * This constructor initiate the arraylist and calls the repective methods to create a new deck
@@ -43,7 +44,7 @@ public class CardDeck {
 	}
 
 	/**
-	 * this method shuffle the deck after creating a new deck
+	 * This method shuffles the deck
 	 */
 	private void shuffleDeck() {
 		Collections.shuffle(deck); 
@@ -55,5 +56,10 @@ public class CardDeck {
 	 */
 	public ArrayList<Card> getDeck() {
 		return deck;
+	}
+	
+	public Card drawCard() {
+		CurrentCard++;
+		return deck.get(CurrentCard-1);
 	}
 }
