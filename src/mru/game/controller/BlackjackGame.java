@@ -1,7 +1,3 @@
-package mru.game.controller;
-
-public class BlackjackGame {
-
 	/**
 	 * In this class you implement the game
 	 * You should use CardDeck class here
@@ -146,7 +142,4 @@ public class BlackjackGame {
             System.out.println("It's a tie.");
         }
     }
-}
-
-
 }

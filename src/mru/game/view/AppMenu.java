@@ -57,7 +57,7 @@ public class AppMenu {
 		}
 	}
 	
-	public static void DrawMainMenu() {
+	private static void DrawMainMenu() {
 		System.out.println("Select one of these options:");
 		System.out.println("\t" + "\t" + "(P) Play Game");
 		System.out.println("\t" + "\t" + "(S) Search");
@@ -65,7 +65,7 @@ public class AppMenu {
 		System.out.print("\n" + "Enter a choice: ");
 	}
 
-	public static void DrawSubMenu() {
+	private static void DrawSubMenu() {
 		System.out.println("Select one of these options:");
 		System.out.println("\t" + "\t" + "(T) Top Player (Most number of wins)");
 		System.out.println("\t" + "\t" + "(N) Looking for a Name");
