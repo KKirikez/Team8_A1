@@ -15,7 +15,7 @@ public class Player {
 	 int balance;
 
 	 //Constructor for Player Class
-	 public Player(String name, int numOfWins, int balance) {
+	 public Player(String name, int balance, int numOfWins) {
 		this.name = name;
 		this.numOfWins = numOfWins;
 		this.balance = balance;

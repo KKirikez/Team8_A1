@@ -1,5 +1,6 @@
 package mru.game.view;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import mru.game.controller.GameManager;
@@ -13,7 +14,7 @@ public class AppMenu {
 	static Scanner input = new Scanner(System.in);
 	
 	
-	public static void MainMenu() {
+	public static void MainMenu() throws FileNotFoundException {
 		DrawMainMenu();
 		char selection = input.nextLine().toUpperCase().charAt(0);
 		switch(selection) {
@@ -34,15 +35,17 @@ public class AppMenu {
 		
 	}
 	
-	public static void SubMenu() {
+	public static void SubMenu() throws FileNotFoundException {
 		DrawSubMenu();
 		char selection = input.nextLine().toUpperCase().charAt(0);
 		switch(selection) {
 		case 'T':
 			GameManager.showTopPlayer();
+			SubMenu();
 			break;
 		case 'N':
-			//Look for name
+			GameManager.searchName();
+			SubMenu();
 			break;
 		case 'B':
 			MainMenu();

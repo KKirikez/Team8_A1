@@ -26,18 +26,10 @@ public class GameManager {
      static ArrayList<Player> players;
      
      
-     public static void startGame() {
-    	 try {
-			loadData();
-		} catch (FileNotFoundException e) {
-			System.out.println("Error, file not found!");
-		}
+     public static void startGame() throws Exception {
+		 loadData();
     	 AppMenu.MainMenu();
-    	 try {
-			saveData();
-		} catch (IOException e) {
-			System.out.println("Error, could not save data!");
-		}
+		 saveData();
      }
      
 	//initalize players
@@ -51,6 +43,7 @@ public class GameManager {
 		File db = new File(FILE_PATH);
 		
 		if (db.exists()) {
+			players = new ArrayList<Player>();
 			Scanner fileReader = new Scanner(db);
 			while (fileReader.hasNextLine()) {
 				String currentLine = fileReader.nextLine();
@@ -76,7 +69,7 @@ public class GameManager {
 	}
 	
 	//Search for a player based off their name
-	public void searchName() throws FileNotFoundException {
+	public static void searchName() throws FileNotFoundException {
 		loadData();
 		AppMenu menu = new AppMenu();
 		String name = menu.namePrompt(); 
@@ -84,12 +77,12 @@ public class GameManager {
 		
 		for (Player player : players) {
 			if (player.getName().equalsIgnoreCase(name)) {
-				System.out.println("\n - PLAYER INFO - ");
-				System.out.println("=======================================");
-				System.out.printf("|%-10s|%-6s|%-8s|\n", "NAME", "WINS", "BALANCE");
-				System.out.println("=======================================");
-				System.out.printf("|%-10s|%6d|%8d $|\n", player.getName(), player.getNumOfWins(), player.getBalance());
-				System.out.println("=======================================");
+				System.out.println("\n                  - PLAYER INFO -                  ");
+				System.out.println("+================+================+================+");
+				System.out.printf("|%-16s|%-16s|%-16s|\n", "NAME", "# WINS", "BALANCE");
+				System.out.println("+================+================+================+");
+				System.out.printf("|%-16s|%-16d|%-16s|\n", player.getName(), player.getNumOfWins(),player.getBalance() + " $");
+				System.out.println("+================+================+================+");
 				playerFound = true;
 				break;
 			}
@@ -112,12 +105,12 @@ public class GameManager {
 			}
 		}
 		
-		System.out.println("\n - TOP PLAYER - ");
-		System.out.println("=======================================");
-		System.out.printf("|%-10s|%-6s|%-8s|\n", "NAME", "WINS", "BALANCE");
-		System.out.println("=======================================");
-		System.out.printf("|%-10s|%6d|%8d $|\n", topPlayer.getName(), topPlayer.getNumOfWins(), topPlayer.getBalance());
-		System.out.println("=======================================");
+		System.out.println("\n          - TOP PLAYER -           ");
+		System.out.println("+================+================+");
+		System.out.printf("|%-16s|%-16s|\n", "NAME", "WINS");
+		System.out.println("+================+================+");
+		System.out.printf("|%-16s|%-16d|\n", topPlayer.getName(), topPlayer.getNumOfWins());
+		System.out.println("+================+================+");
 		System.out.println("Press \"Enter\" to continue...");
 		new Scanner(System.in).nextLine(); 
 	}
