@@ -58,7 +58,7 @@ public class BlackjackGame {
 
             System.out.println("Do you want to play again? (Y/N)");
             String playAgain = scanner.next().trim();
-            if (!playAgain.equalsIgnoreCase("Y")) {
+            if (!playAgain.equalsIgnoreCase("N")) {
                 System.out.println("Thank you for playing Blackjack!");
                 return;
             }
