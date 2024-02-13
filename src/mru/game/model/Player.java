@@ -1,7 +1,5 @@
 package mru.game.model;
 
-import mru.game.view.AppMenu;
-
 
 /**
  * Represents a player record in the Database.
