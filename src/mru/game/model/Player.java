@@ -3,6 +3,10 @@ package mru.game.model;
 import mru.game.view.AppMenu;
 
 
+/**
+ * Represents a player record in the Database.
+ * This class serves as a model for each record in the txt file.
+ */
 public class Player {
 	
 	/**

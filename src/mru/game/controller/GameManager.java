@@ -10,6 +10,9 @@ import java.io.PrintWriter;
 import mru.game.view.AppMenu;
 import mru.game.model.Player;
 
+/**
+ * The GameManager class is responsible for managing the game and player data.
+ */
 public class GameManager {
 	
 	private final static String FILE_PATH = "./res/Casinoinfo.txt";

@@ -7,6 +7,10 @@ import mru.game.model.Player;
 import mru.game.model.Card;
 import mru.game.model.CardDeck;
 
+/**
+ * The BlackjackGame class represents a game of Blackjack.
+ * It contains methods for starting the game, playing turns, determining the winner, and calculating hand values.
+ */
 public class BlackjackGame {
 	
     private static final int BLACKJACK_VALUE = 21;
