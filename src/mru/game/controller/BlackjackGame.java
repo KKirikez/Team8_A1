@@ -14,6 +14,8 @@ public class BlackjackGame {
 	
     private static final int BLACKJACK_VALUE = 21;
     private static final int DEALER_STAND_VALUE = 17;
+    private static ArrayList<Card> playerHand = new ArrayList<>();
+    private static ArrayList<Card> dealerHand = new ArrayList<>();
 
     public static void main(String[] args) {
         try {
@@ -28,46 +30,25 @@ public class BlackjackGame {
     public static void startBlackjack() {
         Scanner scanner = new Scanner(System.in);
         boolean playAgain = true;
-
+        CardDeck deck = new CardDeck();
+        Player player = getPlayer();
+        
         while (playAgain) {
-            CardDeck deck = new CardDeck();
-            ArrayList<Card> playerHand = new ArrayList<>();
-            ArrayList<Card> dealerHand = new ArrayList<>();
-            Player player = getPlayer();
-
-            System.out.println("Welcome " + player.getName() + "!");
-
             dealInitialCards(deck, playerHand, dealerHand);
+            displayCards();
             playerTurn(deck, playerHand, scanner);
             dealerTurn(deck, dealerHand);
             determineWinner(player, playerHand, dealerHand);
-
+            
+            playerHand.clear();
+            dealerHand.clear();
+            
             System.out.print("Do you want to play again? (y/n): ");
             String playAgainInput = scanner.next();
             playAgain = playAgainInput.equalsIgnoreCase("y");
         }
 
         scanner.close();
-    }
-
-    private static Player getPlayer() {
-        try {
-            GameManager.loadData();
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Enter your name: ");
-            String name = scanner.nextLine();
-            for (Player player : GameManager.players) {
-                if (player.getName().equalsIgnoreCase(name)) {
-                    System.out.println("Welcome back, " + player.getName() + "! Your balance is $" + player.getBalance());
-                    return player;
-                }
-            }
-            System.out.println("Welcome, " + name + "! Your balance is $100");
-            return new Player(name, 0, 100); 
-        } catch (IOException e) {
-            System.out.println("An error occurred while loading player data: " + e.getMessage());
-            return null;
-        }
     }
 
     private static void dealInitialCards(CardDeck deck, ArrayList<Card> playerHand, ArrayList<Card> dealerHand) {
@@ -79,7 +60,6 @@ public class BlackjackGame {
 
     private static void playerTurn(CardDeck deck, ArrayList<Card> playerHand, Scanner scanner) {
         while (calculateHandValue(playerHand) < BLACKJACK_VALUE) {
-            System.out.println("Your hand: " + playerHand);
             System.out.print("Do you want to hit or stand? (hit/stand): ");
             String choice = scanner.next();
             if (choice.equalsIgnoreCase("hit")) {
@@ -136,5 +116,39 @@ public class BlackjackGame {
         }
 
         return value;
+    }
+    
+    private static void displayCards() {
+		System.out.println("\n           - Blackjack -           ");
+		System.out.println("+================+================+");
+		System.out.printf("|%-16s|%-16s|\n", "Players Name", "Dealer");
+		System.out.println("+================+================+");
+		int biggest = Math.max(playerHand.size(), dealerHand.size());
+		for(int i = 0; i < biggest; i++) {
+		    String dealerCard = (i < dealerHand.size()) ? dealerHand.get(i).toString() : ""; 
+		    String playerCard = (i < playerHand.size()) ? playerHand.get(i).toString() : ""; 
+		    System.out.printf("|%-16s|%-16s|\n", playerCard, dealerCard);
+		    System.out.println("+----------------+----------------+");
+		}
+    }
+    
+    private static Player getPlayer() {
+        try {
+            GameManager.loadData();
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter your name: ");
+            String name = scanner.nextLine();
+            for (Player player : GameManager.players) {
+                if (player.getName().equalsIgnoreCase(name)) {
+                    System.out.println("Welcome back, " + player.getName() + "! Your balance is $" + player.getBalance());
+                    return player;
+                }
+            }
+            System.out.println("Welcome, " + name + "! Your balance is $100");
+            return new Player(name, 0, 100); 
+        } catch (IOException e) {
+            System.out.println("An error occurred while loading player data: " + e.getMessage());
+            return null;
+        }
     }
 }
