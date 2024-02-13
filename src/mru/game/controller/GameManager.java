@@ -16,7 +16,7 @@ import mru.game.model.Player;
 public class GameManager {
 	
 	private final static String FILE_PATH = "./res/Casinoinfo.txt";
-	private static ArrayList<Player> players;
+	public static ArrayList<Player> players;
 	
 	public static void startGame() throws Exception {
 		loadData();

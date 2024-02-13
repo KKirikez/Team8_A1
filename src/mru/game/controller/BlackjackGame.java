@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import mru.game.model.Player;
-import mru.game.model.Card;
-import mru.game.model.CardDeck;
+import mru.game.controller.*;
 
 /**
  * The BlackjackGame class represents a game of Blackjack.

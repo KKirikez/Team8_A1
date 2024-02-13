@@ -3,7 +3,7 @@ package mru.game.view;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import mru.game.controller.GameManager;
+import mru.game.controller.*;
 
 
 public class AppMenu {	
@@ -19,7 +19,7 @@ public class AppMenu {
 		char selection = input.nextLine().toUpperCase().charAt(0);
 		switch(selection) {
 			case 'P':
-				//Launch blackjack
+				BlackjackGame.startBlackjack();
 				break;
 			case 'S':
 				SubMenu();
