@@ -8,37 +8,23 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import mru.game.view.AppMenu;
-
-
 import mru.game.model.Player;
 
 public class GameManager {
 	
-	/* In this class toy'll need these methods:
-	 * A constructor
-	 * A method to load the txt file into an arraylist (if it exists, so you check if the txt file exists first)
-	 * A save method to store the arraylist into the the txt file 
-	 * A method to search for a player based their name
-	 * A method to find the top players
-	 * Depending on your designing technique you may need and you can add more methods here 
-	 */
-	 private final static String FILE_PATH = "./res/Casinoinfo.txt";
-     static ArrayList<Player> players;
-     
-     
-     public static void startGame() throws Exception {
-		 loadData();
-    	 AppMenu.MainMenu();
-		 saveData();
-     }
-     
-	//initalize players
-    public GameManager() throws Exception {
-        players = new ArrayList<Player>();
+	private final static String FILE_PATH = "./res/Casinoinfo.txt";
+	private static ArrayList<Player> players;
 	
+	public static void startGame() throws Exception {
+		loadData();
+		AppMenu.MainMenu();
+		saveData();
 	}
-    
-	//adds player fields to a formatted arraylist
+	
+	public GameManager() throws Exception {
+		players = new ArrayList<Player>();
+	}
+	
 	public static void loadData() throws FileNotFoundException {
 		File db = new File(FILE_PATH);
 		
@@ -56,19 +42,17 @@ public class GameManager {
 			System.out.println("Error, file not found!");
 		}
 	}
-
-	//saves the arraylist into the txt file
+	
 	public static void saveData() throws IOException {
-        FileWriter fileWriter = new FileWriter(FILE_PATH);
-        PrintWriter printWriter = new PrintWriter(fileWriter);
-        for (Player player : players) {
-            String playerData = String.format("%s,%d,%d", player.getName(), player.getNumOfWins(), player.getBalance());
-            printWriter.println(playerData);
-        }
-        printWriter.close();
+		FileWriter fileWriter = new FileWriter(FILE_PATH);
+		PrintWriter printWriter = new PrintWriter(fileWriter);
+		for (Player player : players) {
+			String playerData = String.format("%s,%d,%d", player.getName(), player.getNumOfWins(), player.getBalance());
+			printWriter.println(playerData);
+		}
+		printWriter.close();
 	}
 	
-	//Search for a player based off their name
 	public static void searchName() throws FileNotFoundException {
 		loadData();
 		AppMenu menu = new AppMenu();
@@ -95,8 +79,7 @@ public class GameManager {
 		new Scanner(System.in).nextLine(); 
 		
 	}
-
-	//finds the top players and displays them
+	
 	public static void showTopPlayer() {
 		Player topPlayer = players.get(0);
 		for (Player player : players) {
@@ -114,11 +97,4 @@ public class GameManager {
 		System.out.println("Press \"Enter\" to continue...");
 		new Scanner(System.in).nextLine(); 
 	}
-	
-
-
-
-	
-	
-
 }
