@@ -10,11 +10,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import mru.game.model.Player;
 
-
 import mru.game.model.Player;
 
 public class BlackjackGame {
-
+	
     private static final int BLACKJACK_VALUE = 21;
     private static final int DEALER_STAND_VALUE = 17;
 
@@ -38,8 +37,6 @@ CardDeck deck = new CardDeck();
 Player player = getPlayer();
 
 System.out.println("Welcome " + player.getName() + "!");
-
-// Rest of the code...
 
        
             determineWinner(player, playerHand, dealerHand);
