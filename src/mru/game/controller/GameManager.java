@@ -18,16 +18,28 @@ public class GameManager {
 	private final static String FILE_PATH = "./res/Casinoinfo.txt";
 	public static ArrayList<Player> players;
 	
+	/**
+	 * Calls methods in the correct order
+	 * @throws Exception
+	 */
 	public static void startGame() throws Exception {
 		loadData();
 		AppMenu.mainMenu();
 		saveData();
 	}
 	
+	/**
+	 * Creates the players arraylist
+	 * @throws Exception
+	 */
 	public GameManager() throws Exception {
 		players = new ArrayList<Player>();
 	}
 	
+	/**
+	 * Loads files into players arraylist from file
+	 * @throws FileNotFoundException
+	 */
 	public static void loadData() throws FileNotFoundException {
 		File db = new File(FILE_PATH);
 		
@@ -46,16 +58,24 @@ public class GameManager {
 		}
 	}
 	
+	/**
+	 * Saves players arraylist to file
+	 * @throws IOException
+	 */
 	public static void saveData() throws IOException {
 		FileWriter fileWriter = new FileWriter(FILE_PATH);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		for (Player player : players) {
-			String playerData = String.format("%s,%d,%d", player.getName(), player.getNumOfWins(), player.getBalance());
+			String playerData = String.format("%s,%d,%d", player.getName(), player.getBalance(), player.getNumOfWins());
 			printWriter.println(playerData);
 		}
 		printWriter.close();
 	}
 	
+	/**
+	 * Searches for a name in the database and displays their information
+	 * @throws FileNotFoundException
+	 */
 	public static void searchName() throws FileNotFoundException {
 		loadData();
 		AppMenu menu = new AppMenu();
@@ -83,6 +103,9 @@ public class GameManager {
 		
 	}
 	
+	/**
+	 * Searches for and shows the top players information
+	 */
 	public static void showTopPlayer() {
 		Player topPlayer = players.get(0);
 		for (Player player : players) {

@@ -28,7 +28,10 @@ public class BlackjackGame {
             System.out.println("An error occurred: " + e.getMessage());
         }
     }
-
+    
+    /**
+     * Controller method for blackjack which loads other methods
+     */
     public static void startBlackjack() {
         Scanner scanner = new Scanner(System.in);
         boolean playAgain = true;
@@ -37,8 +40,8 @@ public class BlackjackGame {
         
         while (playAgain) {    	
         	
-        	System.out.println("How much would you like to bet this round? ");
-            bet = scanner.nextInt();
+        	System.out.println("How much would you like to bet this round? "); 
+        	bet = scanner.nextInt();
             
             dealInitialCards(deck, playerHand, dealerHand);
             playerTurn(deck, playerHand, scanner);
@@ -63,7 +66,13 @@ public class BlackjackGame {
         
 
     }
-
+    
+    /**
+     * Initializes the first 4 hands of the game
+     * @param deck
+     * @param playerHand
+     * @param dealerHand
+     */
     private static void dealInitialCards(CardDeck deck, ArrayList<Card> playerHand, ArrayList<Card> dealerHand) {
         playerHand.add(deck.drawCard());
         playerHand.add(deck.drawCard());
@@ -71,6 +80,12 @@ public class BlackjackGame {
         dealerHand.add(deck.drawCard());
     }
 
+    /**
+     * Simulates the players turn, allowing them to hold or hit
+     * @param deck
+     * @param playerHand
+     * @param scanner
+     */
     private static void playerTurn(CardDeck deck, ArrayList<Card> playerHand, Scanner scanner) {
         while (calculateHandValue(playerHand) < BLACKJACK_VALUE) {
         	displayCards();
@@ -84,12 +99,23 @@ public class BlackjackGame {
         }
     }
 
+    /**
+     * Simulates the dealers turn
+     * @param deck
+     * @param dealerHand
+     */
     private static void dealerTurn(CardDeck deck, ArrayList<Card> dealerHand) {
         while (calculateHandValue(dealerHand) < DEALER_STAND_VALUE) {
             dealerHand.add(deck.drawCard());
         }
     }
 
+    /**
+     * Determines the winner of certain hands
+     * @param player
+     * @param playerHand
+     * @param dealerHand
+     */
     private static void determineWinner(Player player, ArrayList<Card> playerHand, ArrayList<Card> dealerHand) {
         int playerValue = calculateHandValue(playerHand);
         int dealerValue = calculateHandValue(dealerHand);
@@ -119,6 +145,11 @@ public class BlackjackGame {
         }
     }
 
+    /**
+     * Calculates the value of a hand
+     * @param hand
+     * @return
+     */
     private static int calculateHandValue(ArrayList<Card> hand) {
         int value = 0;
         int numAces = 0;
@@ -142,6 +173,9 @@ public class BlackjackGame {
         return value;
     }
     
+    /**
+     * Displays the cards in the proper format
+     */
     private static void displayCards() {
 		System.out.println("\n           - Blackjack -           ");
 		System.out.println("+================+================+");
@@ -156,6 +190,9 @@ public class BlackjackGame {
 		}
     }
     
+    /**
+     * Gets the players data from the array
+     */
     private static void getPlayer() {
         try {
             GameManager.loadData();

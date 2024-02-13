@@ -8,6 +8,10 @@ import mru.game.controller.GameManager;
  */
 public class AppDriver {
 
+	/**
+	 * Initializes the game
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		// This is the starting point of the project!
