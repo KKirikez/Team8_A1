@@ -1,16 +1,11 @@
-	/**
-	 * In this class you implement the game
-	 * You should use CardDeck class here
-	 * See the instructions for the game rules
-	 */	
 package mru.game.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import mru.game.model.Player;
-
-import mru.game.model.Player;
+import mru.game.model.Card;
+import mru.game.model.CardDeck;
 
 public class BlackjackGame {
 	
@@ -32,16 +27,18 @@ public class BlackjackGame {
         boolean playAgain = true;
 
         while (playAgain) {
-           
-CardDeck deck = new CardDeck();
-Player player = getPlayer();
+            CardDeck deck = new CardDeck();
+            ArrayList<Card> playerHand = new ArrayList<>();
+            ArrayList<Card> dealerHand = new ArrayList<>();
+            Player player = getPlayer();
 
-System.out.println("Welcome " + player.getName() + "!");
+            System.out.println("Welcome " + player.getName() + "!");
 
-       
+            dealInitialCards(deck, playerHand, dealerHand);
+            playerTurn(deck, playerHand, scanner);
+            dealerTurn(deck, dealerHand);
             determineWinner(player, playerHand, dealerHand);
 
-      
             System.out.print("Do you want to play again? (y/n): ");
             String playAgainInput = scanner.next();
             playAgain = playAgainInput.equalsIgnoreCase("y");
@@ -130,7 +127,6 @@ System.out.println("Welcome " + player.getName() + "!");
             }
         }
 
-        
         while (value > BLACKJACK_VALUE && numAces > 0) {
             value -= 10; // Change ace value from 11 to 1
             numAces--;
