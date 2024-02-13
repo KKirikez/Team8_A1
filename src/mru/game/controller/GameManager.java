@@ -20,7 +20,7 @@ public class GameManager {
 	
 	public static void startGame() throws Exception {
 		loadData();
-		AppMenu.MainMenu();
+		AppMenu.mainMenu();
 		saveData();
 	}
 	

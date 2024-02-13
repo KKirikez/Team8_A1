@@ -16,6 +16,7 @@ public class BlackjackGame {
     private static final int DEALER_STAND_VALUE = 17;
     private static ArrayList<Card> playerHand = new ArrayList<>();
     private static ArrayList<Card> dealerHand = new ArrayList<>();
+    private static int bet = 0;
 
     public static void main(String[] args) {
         try {
@@ -33,11 +34,19 @@ public class BlackjackGame {
         CardDeck deck = new CardDeck();
         Player player = getPlayer();
         
-        while (playAgain) {
+        while (playAgain) {    	
+        	System.out.println("How much would you like to bet this round? ");
+            bet = scanner.nextInt();
+//        	if(bet > player.getBalance()) {
+//        		System.out.println("You have bet more than you have, setting bet to be your max amount.");
+//        		bet = player.getBalance();
+//        		System.out.println("Your bet is $" + bet);
+//        	}
+            
             dealInitialCards(deck, playerHand, dealerHand);
-            displayCards();
             playerTurn(deck, playerHand, scanner);
             dealerTurn(deck, dealerHand);
+            displayCards();
             determineWinner(player, playerHand, dealerHand);
             
             playerHand.clear();
@@ -46,9 +55,14 @@ public class BlackjackGame {
             System.out.print("Do you want to play again? (y/n): ");
             String playAgainInput = scanner.next();
             playAgain = playAgainInput.equalsIgnoreCase("y");
+            System.out.println("Your balance is $" + player.getBalance());
+            if(player.getBalance() <= 0) {
+        		System.out.println("I'm sorry " + player.getName() + ", but you have lost all your money.");
+        		System.out.println("Please come back once you have some more money.");
+        		break;
+        	}
         }
 
-        scanner.close();
     }
 
     private static void dealInitialCards(CardDeck deck, ArrayList<Card> playerHand, ArrayList<Card> dealerHand) {
@@ -60,7 +74,8 @@ public class BlackjackGame {
 
     private static void playerTurn(CardDeck deck, ArrayList<Card> playerHand, Scanner scanner) {
         while (calculateHandValue(playerHand) < BLACKJACK_VALUE) {
-            System.out.print("Do you want to hit or stand? (hit/stand): ");
+        	displayCards();
+        	System.out.print("Do you want to hit or stand? (hit/stand): ");
             String choice = scanner.next();
             if (choice.equalsIgnoreCase("hit")) {
                 playerHand.add(deck.drawCard());
@@ -85,12 +100,20 @@ public class BlackjackGame {
             return;
         }
 
-        if (dealerValue > BLACKJACK_VALUE || playerValue > dealerValue) {
-            System.out.println("Player wins!");
+        if (dealerValue > BLACKJACK_VALUE) {
+            System.out.println("Dealer busted! You win.");
+            System.out.println("You won $" + bet);
+            player.setBalance(player.getBalance() + bet);
             player.setNumOfWins(player.getNumOfWins() + 1);
         } else if (dealerValue > playerValue) {
             System.out.println("Dealer wins!");
-        } else {
+            System.out.println("You lost $" + bet);
+            player.setBalance(player.getBalance() - bet);
+        } else if (playerValue > dealerValue) {
+        	System.out.println("You win!");
+        	System.out.println("You won $" + bet);
+            player.setBalance(player.getBalance() + bet);
+    	}	else {
             System.out.println("It's a tie!");
         }
     }

@@ -14,25 +14,27 @@ public class AppMenu {
 	static Scanner input = new Scanner(System.in);
 	
 	
-	public static void MainMenu() throws FileNotFoundException {
+	public static void mainMenu() throws FileNotFoundException {
 		DrawMainMenu();
 		char selection = input.nextLine().toUpperCase().charAt(0);
 		switch(selection) {
 			case 'P':
 				BlackjackGame.startBlackjack();
+				mainMenu();
 				break;
 			case 'S':
 				SubMenu();
 				break;
 			case 'E':
 				System.out.println("Exiting program, thank you for playing!");
+				System. exit(0); 
 				break;
 			default:
 				System.out.println("Error, invalid input selected. Please try again!");
-				MainMenu();
+				mainMenu();
 				break;
 		}
-		
+		input.close();
 	}
 	
 	public static void SubMenu() throws FileNotFoundException {
@@ -48,7 +50,7 @@ public class AppMenu {
 			SubMenu();
 			break;
 		case 'B':
-			MainMenu();
+			mainMenu();
 			break;
 		default:
 			System.out.println("Error, invalid input selected. Please try again!");
