@@ -1,6 +1,7 @@
 package mru.game.view;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 import mru.game.controller.*;
@@ -27,6 +28,11 @@ public class AppMenu {
 				break;
 			case 'E':
 				System.out.println("Exiting program, thank you for playing!");
+			try {
+				GameManager.saveData();
+			} catch (Exception e) {
+				System.out.println("Error saving file.");
+			}
 				System. exit(0); 
 				break;
 			default:

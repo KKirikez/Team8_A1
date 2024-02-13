@@ -17,6 +17,7 @@ public class BlackjackGame {
     private static ArrayList<Card> playerHand = new ArrayList<>();
     private static ArrayList<Card> dealerHand = new ArrayList<>();
     private static int bet = 0;
+    private static Player player = new Player();
 
     public static void main(String[] args) {
         try {
@@ -32,16 +33,12 @@ public class BlackjackGame {
         Scanner scanner = new Scanner(System.in);
         boolean playAgain = true;
         CardDeck deck = new CardDeck();
-        Player player = getPlayer();
+        getPlayer();
         
         while (playAgain) {    	
+        	
         	System.out.println("How much would you like to bet this round? ");
             bet = scanner.nextInt();
-//        	if(bet > player.getBalance()) {
-//        		System.out.println("You have bet more than you have, setting bet to be your max amount.");
-//        		bet = player.getBalance();
-//        		System.out.println("Your bet is $" + bet);
-//        	}
             
             dealInitialCards(deck, playerHand, dealerHand);
             playerTurn(deck, playerHand, scanner);
@@ -58,10 +55,12 @@ public class BlackjackGame {
             System.out.println("Your balance is $" + player.getBalance());
             if(player.getBalance() <= 0) {
         		System.out.println("I'm sorry " + player.getName() + ", but you have lost all your money.");
-        		System.out.println("Please come back once you have some more money.");
+        		System.out.println("Please come back to our casino once you have some more money.");
         		break;
         	}
         }
+        GameManager.players.add(player);
+        
 
     }
 
@@ -97,6 +96,8 @@ public class BlackjackGame {
 
         if (playerValue > BLACKJACK_VALUE) {
             System.out.println("Player busted! Dealer wins.");
+            System.out.println("You lost $" + bet);
+            player.setBalance(player.getBalance() - bet);
             return;
         }
 
@@ -155,23 +156,35 @@ public class BlackjackGame {
 		}
     }
     
-    private static Player getPlayer() {
+    private static void getPlayer() {
         try {
             GameManager.loadData();
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter your name: ");
             String name = scanner.nextLine();
-            for (Player player : GameManager.players) {
-                if (player.getName().equalsIgnoreCase(name)) {
-                    System.out.println("Welcome back, " + player.getName() + "! Your balance is $" + player.getBalance());
-                    return player;
+            boolean flag = false;
+            for (Player foundPlayer : GameManager.players) {
+            	if (foundPlayer.getName().equalsIgnoreCase(name)) {
+                	System.out.println("****************************************");
+                    System.out.printf("%12s %n", "Welcome back, " + foundPlayer.getName() + "! Your balance is $" + foundPlayer.getBalance());
+                    System.out.println("****************************************");
+                    player.setName(foundPlayer.getName());
+                    player.setBalance(foundPlayer.getBalance());
+                    player.setNumOfWins(foundPlayer.getNumOfWins()); 
+                    GameManager.players.remove(foundPlayer);
+                    flag = true;
                 }
             }
-            System.out.println("Welcome, " + name + "! Your balance is $100");
-            return new Player(name, 0, 100); 
+            if(!flag) {
+            	System.out.println("****************************************");
+                System.out.printf("%16s", "Welcome, " + name + "! Your balance is $100\n");
+                System.out.println("****************************************");
+                player.setName(name);
+                player.setBalance(100);
+                player.setNumOfWins(0); 
+            }
         } catch (IOException e) {
             System.out.println("An error occurred while loading player data: " + e.getMessage());
-            return null;
         }
     }
 }

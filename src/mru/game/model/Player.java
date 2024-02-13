@@ -24,6 +24,10 @@ public class Player {
 
 	 }
 	 
+	 public Player() {
+		 
+	 }
+	 
 	 // Setters for Player Class
 	 public void setName(String name) {
 		this.name = name;
