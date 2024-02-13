@@ -9,19 +9,17 @@ class PlayerTest {
 	@Test
 	void test() {
 		Player test = new Player("Name", 10, 90);
-		assertEquals(test.getName(),"Name");
-		assertEquals(test.getBalance(),10);
-		assertEquals(test.getNumOfWins(),90);
+		assertEquals("Name", test.getName());
+		assertEquals(10, test.getBalance());
+		assertEquals(90, test.getNumOfWins());
 		
 		test.setName("test");
 		test.setBalance(100);
 		test.setNumOfWins(9);
 		
-		assertEquals(test.getName(),"test");
-		assertEquals(test.getBalance(),100);
-		assertEquals(test.getNumOfWins(),9);
-		
-		
+		assertEquals("test", test.getName());
+		assertEquals(100, test.getBalance());
+		assertEquals(9, test.getNumOfWins());
 	}
 
 }
