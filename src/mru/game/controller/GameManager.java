@@ -75,29 +75,12 @@ public class GameManager {
 			}
 		}
 	
-		if (!playerFound) {
-			System.out.println("\nPlayer not found in the database.");
-		}
-		System.out.println("Press \"Enter\" to continue...");
-		new Scanner(System.in).nextLine(); 
-		
-	}
-	
-	public static void showTopPlayer() {
-		Player topPlayer = players.get(0);
-		for (Player player : players) {
-			if (player.getNumOfWins() > topPlayer.getNumOfWins()) {
-				topPlayer = player;
+					if (!playerFound) {
+						System.out.println("\nPlayer not found in the database.");
+					}
+					System.out.println("Press \"Enter\" to continue...");
+					Scanner scanner = new Scanner(System.in);
+					scanner.nextLine();
+					scanner.close();
+				}
 			}
-		}
-		
-		System.out.println("\n          - TOP PLAYER -           ");
-		System.out.println("+================+================+");
-		System.out.printf("|%-16s|%-16s|\n", "NAME", "WINS");
-		System.out.println("+================+================+");
-		System.out.printf("|%-16s|%-16d|\n", topPlayer.getName(), topPlayer.getNumOfWins());
-		System.out.println("+================+================+");
-		System.out.println("Press \"Enter\" to continue...");
-		new Scanner(System.in).nextLine(); 
-	}
-}

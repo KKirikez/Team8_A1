@@ -1,7 +1,5 @@
 package mru.game.application;
 
-import java.io.FileNotFoundException;
-
 import mru.game.controller.GameManager;
 
 /**
